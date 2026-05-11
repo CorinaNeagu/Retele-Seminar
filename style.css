@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+
+html, body, [class*="css"] { 
+    font-family: 'Outfit', sans-serif; 
+}
+
+.stApp { 
+    background: #FFFAF4; 
+}
+
+[data-testid="stSidebar"] {
+    background-color: #ffffff !important;
+    border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+[data-testid="stSidebarNav"] { display: none; }
+
+.main-header {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #FF9A8D 0%, #FF6A88 100%);
+    color: white;
+    border-radius: 30px;
+    margin-bottom: 40px;
+    box-shadow: 0 15px 35px rgba(255, 154, 141, 0.3);
+}
+
+.premium-card {
+    background: white;
+    padding: 20px;
+    border-radius: 22px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+    border: 1px solid rgba(255,154,141,0.1);
+    margin-bottom: 20px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.premium-card:hover { 
+    transform: translateY(-8px); 
+    box-shadow: 0 20px 40px rgba(255, 154, 141, 0.15); 
+    border-color: #FF9A8D;
+}
+
+.stButton>button {
+    width: 100%;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #FF9A8D, #FF6A88) !important;
+    color: white !important;
+    padding: 10px 20px;
+    font-weight: 700;
+    border: none !important;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stButton>button:hover {
+    transform: scale(1.02) translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 106, 136, 0.4);
+}
+
+.calc-box {
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    text-align: center;
+    border: 2px solid #FFECEA;
+    box-shadow: 0 10px 20px rgba(255, 154, 141, 0.05);
+}
+
+.ticket-container {
+    background: linear-gradient(135deg, #ffffff 0%, #fff5f4 100%);
+    padding: 25px;
+    border-radius: 25px;
+    border: 1px solid #FFD6D0;
+    box-shadow: 0 15px 30px rgba(255, 154, 141, 0.1);
+    text-align: center;
+}
+
+.ticket-grid {
+    display: flex; 
+    justify-content: space-around; 
+    align-items: center;
+}
+
+.ticket-item-label {
+    font-size: 0.75rem; 
+    color: #888; 
+    display: block;
+    text-transform: uppercase;
+}
+
+.ticket-item-value {
+    font-weight: bold; 
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.ticket-divider {
+    width: 1px; 
+    height: 40px; 
+    background: #FFD6D0;
+}
+
+.highlight-value {
+    color: #FF6A88;
+    font-size: 1.3rem !important;
+}
+
+.clock-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border: 8px solid #FF9A8D;
+    border-radius: 50%;
+    margin: 20px auto;
+    background: white;
+    box-shadow: 0 10px 25px rgba(255, 154, 141, 0.2);
+}
+
+.clock-container::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    background: #FF6A88;
+    border-radius: 50%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.clock-container::before {
+    content: '12'; 
+    position: absolute; 
+    top: 10px; left: 50%; 
+    transform: translateX(-50%); 
+    font-weight: bold; 
+    color: #FFD6D0;
+}
+
+.hand {
+    position: absolute;
+    bottom: 50%; left: 50%;
+    transform-origin: bottom;
+    background: #333;
+    border-radius: 10px 10px 0 0;
+    transition: transform 0.5s cubic-bezier(0.4, 2.3, 0.3, 1);
+}
+
+.hour-hand { width: 6px; height: 50px; margin-left: -3px; }
+.minute-hand { width: 4px; height: 70px; margin-left: -2px; background: #666; }
+
+.stRadio div[role="radiogroup"] > label {
+    background-color: #fdfdfd;
+    border: 1px solid #f0f0f0;
+    padding: 12px 15px !important;
+    border-radius: 14px;
+    transition: 0.3s;
+    width: 100%;
+    font-weight: 600;
+    color: #555;
+}
+
+.stRadio div[role="radiogroup"] > label:hover {
+    border-color: #FF9A8D;
+    background-color: #FFF8F7;
+    color: #FF6A88;
+}
+
+.sidebar-info-box {
+    background: #FFF8F7;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #FFECEC;
+}
+
+.social-circle {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.social-circle:hover { transform: rotate(10deg) scale(1.1); }
+
+[data-testid="column"]:has(#cart-root) {
+    position: fixed !important;
+    right: 2rem;
+    top: 100px;
+    width: 25% !important; 
+    max-height: 80vh;
+    overflow-y: auto;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 25px;
+    border: 1px solid #FFD6D0;
+    box-shadow: 0 10px 30px rgba(255, 154, 141, 0.15);
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    [data-testid="column"]:has(#cart-root) {
+        position: relative !important;
+        width: 100% !important;
+        right: 0; top: 0;
+    }
+}
+
+div.stButton > button {
+    height: 35px !important; 
+    padding: 0px 15px !important; 
+    font-size: 0.8rem !important; 
+    font-weight: 600 !important;
+    border-radius: 10px !important; 
+    width: auto !important; 
+    margin: 0 auto !important; 
+    display: block !important;
+}

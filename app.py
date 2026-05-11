@@ -1,12 +1,43 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
+import time
 
 st.set_page_config(
     page_title="Blăniță Răsfățată | Ultra Pet Spa",
     page_icon="🐾",
     layout="wide"
 )
+
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+
+local_css("style.css")
+
+@st.dialog("📖 Articol Complet")
+def read_article(articol):  
+    st.image(articol["img"], use_container_width=True)
+    
+    st.markdown(f"<h2 style='color: #FF6A88; margin-top: 0;'>{articol['titlu']}</h2>", unsafe_allow_html=True)
+    
+    st.write(articol["text"])
+    
+    if "extra_text" in articol:
+        st.markdown(f"""
+            <div style="background-color: #FFF0ED; padding: 15px; border-left: 5px solid #FF9A8D; border-radius: 10px; margin: 15px 0;">
+                <b style="color: #FF6A88;">💡 Știai că?</b><br>
+                <span style="color: #555;">{articol['extra_text']}</span>
+            </div>
+        """, unsafe_allow_html=True)
+        
+    st.divider()
+    
+    st.markdown("""
+        <p style='text-align: center; font-style: italic; color: #888;'>
+            📍 Vizitează salonul nostru din <b>Sectorul 4</b> pentru consultanță personalizată.
+        </p>
+    """, unsafe_allow_html=True)
 
 if 'form_done' not in st.session_state:
     st.session_state.form_done = False
@@ -15,156 +46,45 @@ def handle_submit():
     st.session_state.form_done = True
     st.balloons()
 
-st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
-    
-    html, body, [class*="css"] { font-family: 'Outfit', sans-serif; }
-    .stApp { background: #FFFAF4; }
-    
-    /* Header Principal */
-    .main-header {
-        text-align: center;
-        padding: 70px 20px;
-        background: linear-gradient(135deg, #FF9A8D 0%, #FF6A88 100%);
-        color: white;
-        border-radius: 40px;
-        margin-bottom: 40px;
-        box-shadow: 0 20px 40px rgba(255, 154, 141, 0.3);
-    }
-
-    /* Carduri stil Glassmorphism */
-    .premium-card {
-        background: white;
-        padding: 25px;
-        border-radius: 25px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        border: 1px solid rgba(255,154,141,0.1);
-        margin-bottom: 20px;
-        transition: 0.3s;
-    }
-    .premium-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(255, 154, 141, 0.1); }
-
-    .stButton>button {
-        width: 100%;
-        border-radius: 15px;
-        background: #FF9A8D;
-        color: white;
-        padding: 12px;
-        font-weight: 800;
-        border: none;
-    }
-
-    .calc-box {
-        background: #FFF0ED;
-        padding: 30px;
-        border-radius: 30px;
-        text-align: center;
-        border: 2px dashed #FF9A8D;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-@st.dialog("📖 Articol Complet")
-def read_article(articol):  
-    st.image(articol["img"], use_container_width=True)
-    st.title(articol["titlu"])
-    st.write(articol["text"])
-    
-    if "extra_text" in articol:
-        st.info(articol["extra_text"])
-        
-    st.divider()
-    st.info("Sfat: Vizitează salonul nostru din Sectorul 4 pentru consultanță personalizată.")
-
 with st.sidebar:
-    st.markdown("""
-        <style>
-        .stSidebar [data-testid="stImage"] {
-            display: flex;
-            justify-content: center;
-            filter: drop-shadow(0px 10px 10px rgba(255, 154, 141, 0.4));
-            padding-bottom: 20px;
-        }
-        .stSidebar [data-testid="stImage"] img {
-            border-radius: 20px; 
-            width: 150px !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
-
-    st.image("logo.jpg")
-    
-    st.markdown("<h2 style='text-align: center; color: #FF9A8D; font-size: 1.5rem; margin-top: -10px;'>Blăniță Răsfățată</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #888; font-size: 0.8rem; margin-top: -15px;'>Premium Pet Spa</p>", unsafe_allow_html=True)
-    
+    st.image("assets/logo.jpg")
+    st.markdown("<h2 style='text-align: center; color: #FF9A8D; margin-bottom: 0;'>Blăniță Răsfățată</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #888; font-size: 0.9rem;'>Premium Pet Spa</p>", unsafe_allow_html=True)
     st.divider()
 
     st.markdown("""
-        <style>
-        /* Elimină cercul de la radio și face meniul să arate ca butoane */
-        [data-testid="stSidebarNav"] {display: none;}
-        
-        .stRadio [role=radiogroup] {
-            gap: 10px;
-        }
-        
-        .stRadio div[role="radiogroup"] > label {
-            background-color: white;
-            border: 1px solid rgba(255,154,141,0.2);
-            padding: 10px 20px;
-            border-radius: 12px;
-            transition: 0.3s;
-            width: 100%;
-        }
-        
-        .stRadio div[role="radiogroup"] > label:hover {
-            border-color: #FF9A8D;
-            background-color: #FFF0ED;
-        }
-
-        [data-testid="stSidebar"] {
-            background-color: white !important;
-            border-right: 1px solid #eee;
-        }
-        </style>
+        <div style="display: flex; justify-content: center; gap: 15px;">
+            <a href="https://www.instagram.com/blanita_rasfatata?igsh=OG54cHVhbnRvaGts&utm_source=qr" target="_blank" style="text-decoration: none;">
+                <div class="social-circle" style="background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);">
+                    <span style="color: white; font-size: 14px;">IG</span>
+                </div>
+            </a>
+            <a href="https://www.facebook.com/share/1LwXqXUFs6/?mibextid=wwXIfr" target="_blank" style="text-decoration: none;">
+                <div class="social-circle" style="background: #1877F2;">
+                    <span style="color: white; font-size: 14px;">FB</span>
+                </div>
+            </a>
+        </div>
     """, unsafe_allow_html=True)
 
-    menu = st.radio("EXPLOREAZĂ", 
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    menu = st.radio("MENIU", 
                     ["🏠 Acasă", "✂️ Servicii & Programări", "🛍️ Pet Boutique", "🐶 Blog Păros", "⭐ Feedback"],
                     label_visibility="collapsed") 
 
-    st.spacer = st.markdown("<br><br>", unsafe_allow_html=True)
-    
+    st.markdown("<br>", unsafe_allow_html=True)
+
     st.markdown("""
-        <div style="background: linear-gradient(135deg, #FFF0ED 0%, #FFFAF4 100%); 
-                    padding: 20px; border-radius: 20px; border: 1px solid #FFD6D0;">
-            <p style="color: #FF6A88; font-weight: 800; margin-bottom: 5px; font-size: 0.9rem;">📍 LOCAȚIE</p>
-            <p style="color: #555; font-size: 0.85rem; margin-bottom: 15px;">Sector 4, București</p>
-            <p style="color: #FF6A88; font-weight: 800; margin-bottom: 5px; font-size: 0.9rem;">📞 CONTACT</p>
-            <p style="color: #555; font-size: 0.85rem;">07xx xxx xxx</p>
+        <div class="sidebar-info-box">
+            <small style="color: #FF6A88; font-weight: 800;">📍 LOCAȚIE</small><br>
+            <span style="color: #555; font-size: 0.9rem;">Sector 4, București</span><br><br>
+            <small style="color: #FF6A88; font-weight: 800;">📞 CONTACT</small><br>
+            <span style="color: #555; font-size: 0.9rem;">07xx xxx xxx</span>
         </div>
     """, unsafe_allow_html=True)
 
-    social_html = """
-        <div style="display: flex; justify-content: center; gap: 20px;">
-            <a href="https://www.instagram.com/CONTUL_TAU" target="_blank" style="text-decoration: none;">
-                <div style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
-                            width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; 
-                            box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
-                    <span style="color: white; font-size: 20px; font-weight: bold;">IG</span>
-                </div>
-            </a>
-            <a href="https://www.facebook.com/PAGINA_TA" target="_blank" style="text-decoration: none;">
-                <div style="background: #1877F2; width: 40px; height: 40px; border-radius: 50%; 
-                            display: flex; justify-content: center; align-items: center; 
-                            box-shadow: 0 4px 8px rgba(0,0,0,0.15);">
-                    <span style="color: white; font-size: 20px; font-weight: bold;">FB</span>
-                </div>
-            </a>
-        </div>
-    """
-    st.markdown(social_html, unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
 
 if menu == "🏠 Acasă":
     st.markdown('<div class="main-header"><h1>✨ BLĂNIȚĂ RĂSFĂȚATĂ</h1><p>Standardul de Aur în Estetică Canină</p></div>', unsafe_allow_html=True)
@@ -173,15 +93,40 @@ if menu == "🏠 Acasă":
     with col_a1:
         st.subheader("Bun venit în Universul Răsfățului")
         st.write("Suntem mai mult decât un salon de grooming; suntem un centru de wellness unde prietenul tău beneficiază de aromaterapie, muzică de relaxare și cele mai fine tratamente cosmetice.")
+        st.markdown("""
+    <div style="
+        background: linear-gradient(90deg, #FF9A8D 0%, #FF6A88 100%);
+        padding: 15px;
+        border-radius: 15px;
+        text-align: center;
+        margin: 30px 0 20px 0;
+        box-shadow: 0 4px 15px rgba(255, 154, 141, 0.2);
+    ">
+        <h2 style="color: white; margin: 0; font-size: 1.5rem;">📸 MOMENTE DE RĂSFĂȚ (Galerie)</h2>
+    </div>
+""", unsafe_allow_html=True)
         st.video("https://www.youtube.com/watch?v=56nQi71MPvw")
+        st.image("assets/poster.jpeg")
+        st.video("https://www.youtube.com/watch?v=j4bIJrYU-lI")
+        st.image("assets/trim.jpg")
+        st.video("https://www.youtube.com/watch?v=TzoFVi3i1Xk&list=PLpMCdON1SI6X3TfE2z9Bq8Ws9r1OVvtxk&index=2")
     with col_a2:
         st.markdown('<div class="premium-card"><h4>📍 Sector 4 Focus</h4><p>Suntem mândri să servim comunitatea din Sectorul 4. Locația noastră este special gândită pentru acces facil și un mediu liniștit.</p></div>', unsafe_allow_html=True)
         st.image("https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=500", use_container_width=True)
+        st.video("https://www.youtube.com/watch?v=An8ri0pFGAs")
+        st.image("assets/spa.jpg")
+        st.video("https://www.youtube.com/watch?v=pGXZ0tM_XeA&list=PLpMCdON1SI6X3TfE2z9Bq8Ws9r1OVvtxk")
+        st.image("assets/bath.jpg")
+        st.video("https://www.youtube.com/watch?v=TX957G2o5mY&list=PLpMCdON1SI6X3TfE2z9Bq8Ws9r1OVvtxk&index=5")
+        st.video("https://www.youtube.com/watch?v=tkzwXX53qQ8")
 
 elif menu == "✂️ Servicii & Programări":
     st.header("✂️ Configurează Vizita")
     
-    col_calc, col_calen = st.columns([1, 1.2])
+    if 'ora_h' not in st.session_state:
+        st.session_state.ora_h = "09:00"
+
+    col_calc, col_calen = st.columns([1, 1.2], gap="large")
     
     with col_calc:
         st.subheader("🧮 Calculator Preț")
@@ -191,46 +136,135 @@ elif menu == "✂️ Servicii & Programări":
         baza = {"Mică (<10kg)": 100, "Medie (10-25kg)": 150, "Mare (>25kg)": 220}
         total = baza[talia] + (len(servicii) * 40)
         
-        st.markdown(f'<div class="calc-box"><h3>Preț Estimat</h3><h1 style="color: #FF9A8D;">{total} RON</h1></div>', unsafe_allow_html=True)
+        st.markdown(f'''
+            <div class="calc-box">
+                <span style="color: #888; font-size: 0.9rem;">Preț Estimat</span>
+                <h1 style="color: #FF9A8D; margin: 0;">{total} RON</h1>
+            </div>
+        ''', unsafe_allow_html=True)
 
     with col_calen:
-        st.subheader("📅 Programează-te")
-        data = st.date_input("Alege ziua:", min_value=datetime.now())
-        ora = st.select_slider("Alege ora:", options=["09:00", "11:30", "14:00", "16:30", "19:00"])
+        st.subheader("📅 Programare Rapidă")
         
-        st.markdown(f'<div class="premium-card"><h4>Rezumat Programare</h4><p>Data: {data}<br>Ora: {ora}<br>Talie: {talia}</p></div>', unsafe_allow_html=True)
-        if st.button("Confirmă Disponibilitatea"):
-            st.toast("Verificăm slotul...")
-            st.success("Slotul este disponibil! Te contactăm pentru confirmare.")
+        data = st.date_input("Ziua:", min_value=datetime.now())
+        
+        h, m = map(int, st.session_state.ora_h.split(':'))
+        hour_angle = (h % 12) * 30 + (m * 0.5)
+        minute_angle = m * 6
+
+        st.markdown(f"""
+            <div class="clock-container">
+                <div class="hand hour-hand" style="transform: rotate({hour_angle}deg);"></div>
+                <div class="hand minute-hand" style="transform: rotate({minute_angle}deg);"></div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        st.write("🕒 Alege ora disponibilă:")
+
+        ore_disponibile = [
+            "08:00", "09:00", "10:00", "11:00", 
+            "12:00", "13:00", "14:00", "15:00", 
+            "16:00", "17:00", "18:00", "19:00"
+        ]
+
+        nr_coloane = 4 
+        rows = [ore_disponibile[i:i + nr_coloane] for i in range(0, len(ore_disponibile), nr_coloane)]
+
+        for row in rows:
+            cols = st.columns(nr_coloane)
+            for i, ora_opt in enumerate(row):
+                label = f"{ora_opt} ✅" if st.session_state.ora_h == ora_opt else ora_opt
+                
+                if cols[i].button(label, key=f"btn_{ora_opt}", use_container_width=True):
+                    st.session_state.ora_h = ora_opt
+                    st.rerun()
+
+        st.markdown(f"""
+            <div class="ticket-container">
+                <div class="ticket-grid">
+                    <div><span class="ticket-item-label">Data</span><span class="ticket-item-value">{data.strftime('%d %b')}</span></div>
+                    <div class="ticket-divider"></div>
+                    <div><span class="ticket-item-label">Ora</span><span class="ticket-item-value highlight-value">{st.session_state.ora_h}</span></div>
+                    <div class="ticket-divider"></div>
+                    <div><span class="ticket-item-label">Talie</span><span class="ticket-item-value">{talia.split()[0]}</span></div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("Finalizează Rezervarea ✨", use_container_width=True, type="primary"):
+            st.balloons()
+            st.success(f"Te așteptăm pe {data.strftime('%d %b')} la ora {st.session_state.ora_h}!")
 
 elif menu == "🛍️ Pet Boutique":
+    if 'cart' not in st.session_state:
+        st.session_state.cart = []
+
     st.header("🛍️ Pet Boutique - Exclusive Collection")
-    produse = [
-        ("Zgardă Piele 'Royal Blue'", "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=300", "120 RON"),
-        ("Parfum 'Summer Paw'", "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300", "85 RON"),
-        ("Pătuț 'Cloud Nine'", "https://images.unsplash.com/photo-1591768793355-74d7c869c177?w=300", "250 RON"),
-        ("Ham Ergonomic 'Neo'", "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=300", "145 RON"),
-        ("Bol Ceramic 'Marble'", "https://images.unsplash.com/photo-1615678815958-5910c6811c25?w=300", "65 RON"),
-        ("Jucărie Ansamblu Pisici", "https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=300", "180 RON"),
-        ("Recompense Artizanale", "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=300", "45 RON"),
-        ("Sampon Organic 'Silk'", "https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=300", "95 RON"),
-        ("Lese Retractabilă 'Pro'", "https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=300", "110 RON"),
-        ("Ulei Somon Wild", "https://images.unsplash.com/photo-1626107438132-72c0c7760920?w=300", "75 RON")
-    ]
     
-    rows = [produse[i:i+3] for i in range(0, len(produse), 3)]
-    for row in rows:
-        cols = st.columns(3)
-        for i, (nume, img, pret) in enumerate(row):
-            with cols[i]:
-                st.markdown(f"""
-                <div class="premium-card">
-                    <img src="{img}" style="width:100%; border-radius:15px; margin-bottom:10px;">
-                    <h4>{nume}</h4>
-                    <p class="product-price">{pret}</p>
-                </div>
-                """, unsafe_allow_html=True)
-                st.button(f"Adaugă {nume.split()[0]}", key=f"p_{nume}")
+    col_prod, col_cart = st.columns([2.5, 1], gap="small")
+    with col_prod:
+        pass
+
+    with col_prod:
+        produse = [
+            ("Zgardă Piele 'Royal Blue'", "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=300", 120),
+            ("Parfum 'Summer Paw'", "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=300", 85),
+            ("Pătuț 'Cloud Nine'", "assets/pat.jpg", 250),
+            ("Ham Ergonomic 'Neo'", "https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=300", 145),
+            ("Bol Ceramic 'Marble'", "https://images.unsplash.com/photo-1615678815958-5910c6811c25?w=300", 65),
+            ("Jucărie Ansamblu Pisici", "https://images.unsplash.com/photo-1545249390-6bdfa286032f?w=300", 180),
+            ("Recompense Artizanale", "https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=300", 45),
+            ("Sampon Organic 'Silk'", "https://images.unsplash.com/photo-1583947581924-860bda6a26df?w=300", 95),
+            ("Lese Retractabilă 'Pro'", "https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=300", 110),
+            ("Ulei Somon Wild", "assets/ulei.jpg", 75)
+        ]
+        
+        rows = [produse[i:i+2] for i in range(0, len(produse), 2)] 
+        for row in rows:
+            cols = st.columns(2)
+            for i, (nume, img, pret) in enumerate(row):
+                with cols[i]:
+                    st.image(img, use_container_width=True)
+                    st.markdown(f"""
+                        <div class="premium-card" style="text-align:center;">
+                            <h4 style="margin-bottom:0;">{nume}</h4>
+                            <p style="color: #FF6A88; font-weight: bold; font-size: 1.2rem;">{pret} RON</p>
+                        </div>
+                    """, unsafe_allow_html=True)
+        
+                    if st.button(f"Adaugă în coș 🛒", key=f"p_{nume}"):
+                        st.session_state.cart.append({"nume": nume, "pret": pret})
+                        st.rerun()
+    with col_cart:
+        st.markdown('<div id="cart-root"></div>', unsafe_allow_html=True)
+        
+        with st.container():
+            st.subheader("🛒 Coșul tău")
+            
+            if not st.session_state.cart:
+                st.info("Coșul este gol momentan.")
+            else:
+                total_cart = sum(item['pret'] for item in st.session_state.cart)
+                
+                for idx, item in enumerate(st.session_state.cart):
+                    c_info, c_del = st.columns([4, 1])
+                    c_info.write(f"**{item['nume']}** \n{item['pret']} RON")
+                    if c_del.button("❌", key=f"del_{idx}"):
+                        st.session_state.cart.pop(idx)
+                        st.rerun()
+                
+                st.divider()
+                st.markdown(f"### Total: {total_cart} RON")
+                
+                if st.button("Finalizează Comanda 💳", use_container_width=True, type="primary"):
+                    st.balloons()
+                    st.success("Comanda a fost trimisă!")
+                    st.session_state.cart = []
+                    import time
+                    time.sleep(2)
+                    st.rerun()
+    
 
 elif menu == "🐶 Blog Păros":
     st.header("🐶 Blogul Codițelor")
@@ -339,4 +373,28 @@ elif menu == "⭐ Feedback":
         st.map(map_data, use_container_width=True)
 
 st.markdown("---")
-st.markdown("<div style='text-align: center; color: #888;'>Blăniță Răsfățată | Premium Pet Spa | București, Sector 4</div>", unsafe_allow_html=True)
+footer_html = """
+<div style="text-align: center; padding: 20px 0;">
+    <div style="color: #888; font-size: 0.9rem; padding: 20px;">
+            Ne puteti gasi si pe retelele de socializare:
+    </div>
+    <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 20px;">
+        <a href="https://www.instagram.com/blanita_rasfatata?igsh=OG54cHVhbnRvaGts&utm_source=qr" target="_blank" style="text-decoration: none;">
+            <div class="social-circle" style="background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                <span style="color: white; font-size: 12px; font-weight: bold;">IG</span>
+            </div>
+        </a>
+        <a href="https://www.facebook.com/share/1LwXqXUFs6/?mibextid=wwXIfr" target="_blank" style="text-decoration: none;">
+            <div class="social-circle" style="background: #1877F2; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">
+                <span style="color: white; font-size: 12px; font-weight: bold;">FB</span>
+            </div>
+        </a>
+    </div>
+    <div style="color: #FF6A88; font-weight: 800; font-size: 1.2rem; margin-bottom: 5px;">✨ BLĂNIȚĂ RĂSFĂȚATĂ ✨</div>
+    <div style="color: #888; font-size: 0.9rem;">
+        Premium Pet Spa | București, Sector 4 <br>
+        <span style="opacity: 0.7; font-size: 0.8rem;">© 2026 Toate drepturile rezervate prietenilor nostri blanosi.</span>
+    </div>
+</div>
+"""
+st.markdown(footer_html, unsafe_allow_html=True)
