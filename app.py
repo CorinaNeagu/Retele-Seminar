@@ -6,8 +6,20 @@ import time
 st.set_page_config(
     page_title="Blăniță Răsfățată | Ultra Pet Spa",
     page_icon="🐾",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
+
+st.markdown("""
+    <style>
+    .stApp, .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp span {
+        color: #333333 !important;
+    }
+    .main-header h1, .main-header p {
+        color: white !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 def local_css(file_name):
     with open(file_name) as f:
