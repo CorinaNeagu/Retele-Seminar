@@ -12,9 +12,133 @@ st.set_page_config(
 
 st.markdown("""
     <style>
-    .stApp, .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp span {
+    /* 0. FORCE GLOBAL LIGHT THEME VARIABLE */
+    :root {
+        --st-colors-bg: white !important;
+        color-scheme: light !important;
+    }     
+
+    /* 1. DATE INPUT BARA PRINCIPALĂ */
+    div[data-testid="stDateInput"] > div {
+        background-color: white !important;
+        border: 1px solid #FFD6D0 !important;
+        border-radius: 5px;
+    }
+    
+    div[data-testid="stDateInput"] input {
+        color: black !important;
+        background-color: white !important;
+        -webkit-text-fill-color: black !important;
+    }
+
+    /* 2. CALENDAR POPOVER (FIX COMPLET CHROME) */
+    /* Containerul mare și fundalul întregului widget */
+    div[data-baseweb="popover"], 
+    div[data-baseweb="calendar"],
+    div[data-baseweb="calendar"] > div,
+    [aria-roledescription="calendar"] {
+        background-color: white !important;
+    }
+
+    /* Header-ul (Luna, Anul și butoanele de navigare) */
+    div[data-baseweb="calendar"] header {
+        background-color: white !important;
+    }
+    
+    /* Dropdown-urile May / 2026 - Aici Chrome forțează deseori negru */
+    div[data-baseweb="calendar"] [data-baseweb="select"],
+    div[data-baseweb="calendar"] [data-baseweb="select"] > div,
+    div[data-baseweb="calendar"] [data-baseweb="select"] span {
+        background-color: white !important;
+        color: black !important;
+        border: 1px solid #eee !important;
+    }
+
+    /* Săgețile de navigare și textul lunii */
+    div[data-baseweb="calendar"] header div, 
+    div[data-baseweb="calendar"] header button svg {
+        color: black !important;
+        fill: black !important;
+    }
+
+    /* Grid-ul de zile și eliminarea dungii negre de jos (Chrome specific) */
+    div[data-baseweb="calendar"] [role="grid"],
+    div[data-baseweb="calendar"] [role="grid"] > div,
+    div[data-baseweb="calendar"] [role="presentation"] {
+        background-color: white !important;
+    }
+
+    /* Zilele săptămânii și butoanele cu numere */
+    div[data-baseweb="calendar"] button,
+    div[data-baseweb="calendar"] [role="columnheader"] {
+        background-color: white !important;
+        color: black !important;
+    }
+
+    /* Hover pe zile */
+    div[data-baseweb="calendar"] button:hover {
+        background-color: #FFF0ED !important;
+        color: #FF6A88 !important;
+    }
+
+    /* 3. BUTONUL TRIMITE REVIEW (ROZ PE ALB - FIX) */
+    div[data-testid="stFormSubmitButton"] button,
+    button[kind="formSubmit"] {
+        background-color: white !important;
+        color: #FF6A88 !important;
+        border: 2px solid #FF6A88 !important;
+        font-weight: bold !important;
+        width: 100% !important;
+        box-shadow: none !important;
+    }
+
+    div[data-testid="stFormSubmitButton"] button:hover {
+        background-color: #FFF0ED !important;
+        color: #FF9A8D !important;
+        border-color: #FF9A8D !important;
+    }
+
+    /* 4. MODALE (TEXT NEGRU) */
+    div[role="dialog"], [data-testid="stDialog"] {
+        background-color: white !important;
+    }
+    
+    div[role="dialog"] p, 
+    div[role="dialog"] span, 
+    div[role="dialog"] li,
+    [data-testid="stDialog"] p,
+    [data-testid="stDialog"] div {
+        color: black !important;
+    }
+
+    /* 5. SELECTOARE ȘI INPUTS GENERALE */
+    div[data-baseweb="select"] > div {
+        background-color: white !important;
+        color: black !important;
+    }
+    
+    div[data-baseweb="select"] span {
+        color: black !important;
+    }
+
+    .stTextArea textarea, .stTextInput input {
+        background-color: white !important;
+        color: black !important;
+        border: 1px solid #FFD6D0 !important;
+    }
+
+    /* Sidebar */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label {
+        background-color: white !important;
+        border: 1px solid #FFD6D0 !important;
+        border-radius: 12px !important;
+    }
+
+    /* Text General App */
+    .stApp p, .stApp h1, .stApp h2, .stApp h3, .stApp h4, label p {
         color: #333333 !important;
     }
+
     .main-header h1, .main-header p {
         color: white !important;
     }
